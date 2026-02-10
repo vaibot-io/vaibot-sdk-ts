@@ -13,6 +13,9 @@ targets:
     vaibot:
         target: typescript
         source: Vaibot SDK API
+        publish:
+            npm:
+                token: $npm_token
         codeSamples:
             registry:
                 location: registry.speakeasyapi.dev/campbell-labs-llc/vaibot/vaibot-sdk-api-typescript-code-samples
