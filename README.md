@@ -1,6 +1,6 @@
 # @vaibot/sdk
 
-Developer-friendly & type-safe Typescript SDK specifically catered to leverage *@vaibot/sdk* API.
+Developer-friendly & type-safe Typescript SDK specifically catered to leverage the [VAIBot API](https://www.vaibot.io).
 
 [![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=@vaibot/sdk&utm_campaign=typescript)
 [![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
@@ -9,7 +9,11 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 <!-- Start Summary [summary] -->
 ## Summary
 
-Vaibot SDK API: OpenAPI for the endpoints used by @vaibot/sdk (revised interface).
+### Vaibot helps developers prove when content was created — without changing how they build.
+
+With a single SDK call, you can generate a verifiable proof for AI-generated text, images, code, or structured data. Vaibot timestamps the content, produces a cryptographic fingerprint, and gives you a receipt you can later verify or anchor on-chain.
+
+Use Vaibot when you need auditability, trust, or provenance in AI pipelines, APIs, or automated workflows — without running your own crypto infrastructure.
 <!-- End Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->
@@ -35,10 +39,6 @@ Vaibot SDK API: OpenAPI for the endpoints used by @vaibot/sdk (revised interface
 
 <!-- Start SDK Installation [installation] -->
 ## SDK Installation
-
-> [!TIP]
-> To finish publishing your SDK to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
-
 
 The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
 
