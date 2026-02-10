@@ -16,6 +16,13 @@ With a single SDK call, you can generate a verifiable proof for AI-generated tex
 Use Vaibot when you need auditability, trust, or provenance in AI pipelines, APIs, or automated workflows — without running your own crypto infrastructure.
 <!-- End Summary [summary] -->
 
+<!-- Start API Key Disclaimer -->
+## This SDK requires an API key
+
+Head over to https://www.vaibot.io to demo how it works, and grab an API key to tr
+
+<!-- End API Key Disclaimer -->
+
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
