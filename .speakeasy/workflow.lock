@@ -1,9 +1,9 @@
-speakeasyVersion: 1.709.2
+speakeasyVersion: 1.709.3
 sources:
     Vaibot SDK API:
         sourceNamespace: vaibot-sdk-api
-        sourceRevisionDigest: sha256:0803b78755dcdab83eed66f6c8eafe6349e765fdfb576873315819444df7781a
-        sourceBlobDigest: sha256:7bbd54a21951cc3d598aa02b048e0bda745bac021eb58b02a52de3e175eb083c
+        sourceRevisionDigest: sha256:62434b82f1b09b5296b835e5feddf04ff62b006326bd98fc6d6d03e92598b6fc
+        sourceBlobDigest: sha256:6614f2a02deb7fbf938ca04e474e8dde85d128e0516d49e6445624eb4b53bee3
         tags:
             - latest
             - 2.0.0
@@ -11,10 +11,10 @@ targets:
     vaibot:
         source: Vaibot SDK API
         sourceNamespace: vaibot-sdk-api
-        sourceRevisionDigest: sha256:0803b78755dcdab83eed66f6c8eafe6349e765fdfb576873315819444df7781a
-        sourceBlobDigest: sha256:7bbd54a21951cc3d598aa02b048e0bda745bac021eb58b02a52de3e175eb083c
+        sourceRevisionDigest: sha256:62434b82f1b09b5296b835e5feddf04ff62b006326bd98fc6d6d03e92598b6fc
+        sourceBlobDigest: sha256:6614f2a02deb7fbf938ca04e474e8dde85d128e0516d49e6445624eb4b53bee3
         codeSamplesNamespace: vaibot-sdk-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:4cc92e0e1a6014afc31fac9a18891fc2a7cf3f6f4c71e5c99b9ae6bf4d0eec23
+        codeSamplesRevisionDigest: sha256:96e489d6d1463f4003ff858eda227047be1a6e46323c5f100763f94aa903db8f
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
