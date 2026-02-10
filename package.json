@@ -3,6 +3,9 @@
   "version": "0.1.2",
   "author": "Speakeasy",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "tshy": {
     "sourceDialects": [
       "@vaibot/sdk/source"
