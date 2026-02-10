@@ -1,0 +1,39 @@
+speakeasyVersion: 1.709.2
+sources:
+    Vaibot SDK API:
+        sourceNamespace: vaibot-sdk-api
+        sourceRevisionDigest: sha256:0803b78755dcdab83eed66f6c8eafe6349e765fdfb576873315819444df7781a
+        sourceBlobDigest: sha256:7bbd54a21951cc3d598aa02b048e0bda745bac021eb58b02a52de3e175eb083c
+        tags:
+            - latest
+            - 2.0.0
+targets:
+    vaibot:
+        source: Vaibot SDK API
+        sourceNamespace: vaibot-sdk-api
+        sourceRevisionDigest: sha256:0803b78755dcdab83eed66f6c8eafe6349e765fdfb576873315819444df7781a
+        sourceBlobDigest: sha256:7bbd54a21951cc3d598aa02b048e0bda745bac021eb58b02a52de3e175eb083c
+        codeSamplesNamespace: vaibot-sdk-api-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:4cc92e0e1a6014afc31fac9a18891fc2a7cf3f6f4c71e5c99b9ae6bf4d0eec23
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        Vaibot SDK API:
+            inputs:
+                - location: ../../openapi.yaml
+            overlays:
+                - location: .speakeasy/speakeasy-modifications-overlay.yaml
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/campbell-labs-llc/vaibot/vaibot-sdk-api
+    targets:
+        vaibot:
+            target: typescript
+            source: Vaibot SDK API
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/campbell-labs-llc/vaibot/vaibot-sdk-api-typescript-code-samples
+                labelOverride:
+                    fixedValue: Typescript (SDK)
+                blocking: false

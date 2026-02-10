@@ -1,0 +1,197 @@
+openapi: 3.1.0
+info:
+  title: Vaibot SDK API
+  version: "2.0.0"
+  description: |
+    OpenAPI for the endpoints used by @vaibot/sdk (revised interface).
+servers:
+  - url: https://www.vaibot.io/api
+    description: Production
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        ok: {type: boolean, example: false}
+        error: {type: string}
+      required: [ok, error]
+    ProveInput:
+      type: object
+      properties:
+        content:
+          oneOf:
+            - type: string
+            - type: string
+              description: "Uint8Array serialized as base64 string"
+        contentType: {type: string, description: "MIME type"}
+        encoding:
+          type: string
+          enum: ["utf-8", "base64"]
+          default: "utf-8"
+        model: {type: string}
+        metadata: {type: object, additionalProperties: true}
+        idempotencyKey: {type: string}
+      required: [content]
+    ProofResult:
+      type: object
+      properties:
+        ok: {type: boolean, example: true}
+        txHash: {type: string}
+        contentHash: {type: string}
+        agentAddress: {type: string}
+        signature: {type: string}
+        chainId: {type: integer}
+        registry: {type: string}
+        publisher: {type: string}
+        status: {type: string, enum: [pending, confirmed]}
+        url: {type: string}
+      required: [ok, contentHash, agentAddress, signature, chainId, registry]
+    VerifyRequest:
+      type: object
+      properties:
+        proofId: {type: string}
+        hash: {type: string}
+      anyOf:
+        - required: [proofId]
+        - required: [hash]
+    VerifyResultVerified:
+      type: object
+      properties:
+        ok: {type: boolean, example: true}
+        verified: {type: boolean, example: true}
+        contentHash: {type: string}
+        agent: {type: string}
+        timestamp: {type: integer}
+        chain: {type: string}
+        contractAddress: {type: string}
+      required: [ok, verified, contentHash, agent, timestamp, chain, contractAddress]
+    VerifyResultNotVerified:
+      type: object
+      properties:
+        ok: {type: boolean, example: true}
+        verified: {type: boolean, example: false}
+        contentHash: {type: string}
+        chain: {type: string}
+        contractAddress: {type: string}
+      required: [ok, verified, contentHash, chain, contractAddress]
+    UsageResult:
+      type: object
+      properties:
+        month: {type: string}
+        quota:
+          type: object
+          properties:
+            monthly: {type: integer}
+            used: {type: integer}
+            remaining: {type: integer}
+          required: [monthly, used, remaining]
+      required: [month, quota]
+    SignInput:
+      type: object
+      properties:
+        output:
+          oneOf:
+            - type: string
+            - type: string
+              description: "Buffer serialized as string"
+        model: {type: string}
+        promptId: {type: string}
+        metadata: {type: object, additionalProperties: true}
+      required: [output]
+    SignedPayload:
+      type: object
+      properties:
+        hash: {type: string}
+        signature: {type: string}
+        agentId: {type: string}
+        signedAt: {type: string}
+        payload: {$ref: "#/components/schemas/SignInput"}
+      required: [hash, signature, agentId, signedAt]
+    RegisterResult:
+      type: object
+      properties:
+        ok: {type: boolean, example: true}
+        txHash: {type: string}
+        contentHash: {type: string}
+        agentAddress: {type: string}
+        signature: {type: string}
+        chainId: {type: integer}
+        registry: {type: string}
+        publisher: {type: string}
+        status: {type: string, enum: [pending, confirmed]}
+        url: {type: string}
+      required: [ok, contentHash, agentAddress, signature, chainId, registry]
+paths:
+  /prove:
+    post:
+      summary: Prove (sign + register) AI output
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/ProveInput"}
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ProofResult"}
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ErrorResponse"}
+        "401":
+          description: Unauthorized
+      x-speakeasy-group: proofs
+      x-speakeasy-name-override: create
+  /verify:
+    post:
+      summary: Verify proof by id or hash
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/VerifyRequest"}
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - {$ref: "#/components/schemas/VerifyResultVerified"}
+                  - {$ref: "#/components/schemas/VerifyResultNotVerified"}
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ErrorResponse"}
+        "401":
+          description: Unauthorized
+      x-speakeasy-group: proofs
+      x-speakeasy-name-override: verify
+  /usage:
+    get:
+      summary: Usage and quota
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/UsageResult"}
+        "401":
+          description: Unauthorized
+      x-speakeasy-group: usage
+      x-speakeasy-name-override: get
