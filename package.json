@@ -6,6 +6,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vaibot-io/vaibot-sdk-ts"
+  },
   "tshy": {
     "sourceDialects": [
       "@vaibot/sdk/source"
