@@ -11,15 +11,18 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage t
 
 ### Vaibot helps developers prove when content was created — without changing how they build.
 
-With a single SDK call, you can generate a verifiable proof for AI-generated text, images, code, or structured data. Vaibot timestamps the content, produces a cryptographic fingerprint, and gives you a receipt you can later verify or anchor on-chain.
+With a single SDK call, you can generate a verifiable proof for AI-generated text, images, code, or structured data. 
+Vaibot timestamps the content, produces a cryptographic fingerprint, and gives you a proof receipt that is anchored to a decentralized ledger.
 
-Use Vaibot when you need auditability, trust, or provenance in AI pipelines, APIs, or automated workflows — without running your own crypto infrastructure.
+Use Vaibot when you need auditability, trust, or provenance in AI pipelines, AP
+Is, or automated workflows — without running your own crypto infrastructure.
+
 <!-- End Summary [summary] -->
 
 <!-- Start API Key Disclaimer -->
 ## This SDK requires an API key
 
-Head over to https://www.vaibot.io to demo how it works, and grab an API key.
+Head over to https://www.vaibot.io to demo how it works, grab an API key, and generate your first proof in minutes.
 
 <!-- End API Key Disclaimer -->
 
@@ -27,6 +30,7 @@ Head over to https://www.vaibot.io to demo how it works, and grab an API key.
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
 * [@vaibot/sdk](#vaibotsdk)
+  * [This SDK requires an API key](#this-sdk-requires-an-api-key)
   * [SDK Installation](#sdk-installation)
   * [Requirements](#requirements)
   * [SDK Example Usage](#sdk-example-usage)
@@ -363,19 +367,23 @@ The `HTTPClient` constructor takes an optional `fetcher` argument that can be
 used to integrate a third-party HTTP client or when writing tests to mock out
 the HTTP client and feed in fixtures.
 
-The following example shows how to use the `"beforeRequest"` hook to to add a
-custom header and a timeout to requests and how to use the `"requestError"` hook
-to log errors:
+The following example shows how to:
+- route requests through a proxy server using [undici](https://www.npmjs.com/package/undici)'s ProxyAgent
+- use the `"beforeRequest"` hook to add a custom header and a timeout to requests
+- use the `"requestError"` hook to log errors
 
 ```typescript
 import { Vaibot } from "@vaibot/sdk";
+import { ProxyAgent } from "undici";
 import { HTTPClient } from "@vaibot/sdk/lib/http";
 
+const dispatcher = new ProxyAgent("http://proxy.example.com:8080");
+
 const httpClient = new HTTPClient({
-  // fetcher takes a function that has the same signature as native `fetch`.
-  fetcher: (request) => {
-    return fetch(request);
-  }
+  // 'fetcher' takes a function that has the same signature as native 'fetch'.
+  fetcher: (input, init) =>
+    // 'dispatcher' is specific to undici and not part of the standard Fetch API.
+    fetch(input, { ...init, dispatcher } as RequestInit),
 });
 
 httpClient.addHook("beforeRequest", (request) => {

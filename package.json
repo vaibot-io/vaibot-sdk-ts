@@ -1,6 +1,6 @@
 {
   "name": "@vaibot/sdk",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "author": "Speakeasy",
   "type": "module",
   "publishConfig": {

@@ -1,9 +1,9 @@
-speakeasyVersion: 1.709.3
+speakeasyVersion: 1.711.0
 sources:
     Vaibot SDK API:
         sourceNamespace: vaibot-sdk-api
-        sourceRevisionDigest: sha256:62434b82f1b09b5296b835e5feddf04ff62b006326bd98fc6d6d03e92598b6fc
-        sourceBlobDigest: sha256:6614f2a02deb7fbf938ca04e474e8dde85d128e0516d49e6445624eb4b53bee3
+        sourceRevisionDigest: sha256:8cd00e4937ad142360bc7ff28307b47c0871ffe707239d1ac98e1d01c1ad8a98
+        sourceBlobDigest: sha256:c0dc2e02d47a09017032324ec2f4c534c00ff703cbc21f1a17e97aa51631d052
         tags:
             - latest
             - 2.0.0
@@ -11,10 +11,10 @@ targets:
     vaibot:
         source: Vaibot SDK API
         sourceNamespace: vaibot-sdk-api
-        sourceRevisionDigest: sha256:62434b82f1b09b5296b835e5feddf04ff62b006326bd98fc6d6d03e92598b6fc
-        sourceBlobDigest: sha256:6614f2a02deb7fbf938ca04e474e8dde85d128e0516d49e6445624eb4b53bee3
+        sourceRevisionDigest: sha256:8cd00e4937ad142360bc7ff28307b47c0871ffe707239d1ac98e1d01c1ad8a98
+        sourceBlobDigest: sha256:c0dc2e02d47a09017032324ec2f4c534c00ff703cbc21f1a17e97aa51631d052
         codeSamplesNamespace: vaibot-sdk-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:96e489d6d1463f4003ff858eda227047be1a6e46323c5f100763f94aa903db8f
+        codeSamplesRevisionDigest: sha256:52cc4da2c692e356ae0d6cfaa609c9223c5804e6723325436921b81d4e3848f3
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -31,6 +31,9 @@ workflow:
         vaibot:
             target: typescript
             source: Vaibot SDK API
+            publish:
+                npm:
+                    token: $npm_token
             codeSamples:
                 registry:
                     location: registry.speakeasyapi.dev/campbell-labs-llc/vaibot/vaibot-sdk-api-typescript-code-samples
