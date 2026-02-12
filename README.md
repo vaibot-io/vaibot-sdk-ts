@@ -327,32 +327,6 @@ run();
 \* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
-<!-- Start Server Selection [server] -->
-## Server Selection
-
-### Override Server URL Per-Client
-
-The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
-```typescript
-import { Vaibot } from "@vaibot/sdk";
-
-const vaibot = new Vaibot({
-  serverURL: "https://www.vaibot.io/api",
-  bearerAuth: process.env["VAIBOT_BEARER_AUTH"] ?? "",
-});
-
-async function run() {
-  const result = await vaibot.proofs.create({
-    content: "<value>",
-  });
-
-  console.log(result);
-}
-
-run();
-
-```
-<!-- End Server Selection [server] -->
 
 <!-- Start Custom HTTP Client [http-client] -->
 ## Custom HTTP Client
