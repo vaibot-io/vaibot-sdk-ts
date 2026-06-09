@@ -23,9 +23,9 @@ import {
   isConnectionError,
   isTimeoutError,
   matchContentType,
-  matchStatusCode,
 } from "./http.js";
 import { Logger } from "./logger.js";
+import { combineSignals } from "./primitives.js";
 import { retry, RetryConfig } from "./retries.js";
 import { SecurityState } from "./security.js";
 
@@ -128,13 +128,15 @@ export class ClientSDK {
     if (!base) {
       return ERR(new InvalidRequestError("No base URL provided for operation"));
     }
-    const reqURL = new URL(base);
-    const inputURL = new URL(path, reqURL);
-
+    const baseURL = new URL(base);
+    let reqURL: URL;
     if (path) {
-      reqURL.pathname += reqURL.pathname.endsWith("/") ? "" : "/";
-      reqURL.pathname += inputURL.pathname.replace(/^\/+/, "");
+      baseURL.pathname = baseURL.pathname.replace(/\/+$/, "") + "/";
+      reqURL = new URL(path, baseURL);
+    } else {
+      reqURL = baseURL;
     }
+    reqURL.hash = "";
 
     let finalQuery = query || "";
 
@@ -197,9 +199,8 @@ export class ClientSDK {
       ...options?.fetchOptions,
       ...options,
     };
-    if (!fetchOptions?.signal && conf.timeoutMs && conf.timeoutMs > 0) {
-      const timeoutSignal = AbortSignal.timeout(conf.timeoutMs);
-      fetchOptions.signal = timeoutSignal;
+    if (!fetchOptions?.signal && conf.timeoutMs != null && conf.timeoutMs > 0) {
+      context.timeoutMs = conf.timeoutMs;
     }
 
     if (conf.body instanceof ReadableStream) {
@@ -232,7 +233,7 @@ export class ClientSDK {
     request: Request,
     options: {
       context: HookContext;
-      errorCodes: number | string | (number | string)[];
+      isErrorStatusCode: (statusCode: number) => boolean;
       retryConfig: RetryConfig;
       retryCodes: string[];
     },
@@ -245,11 +246,20 @@ export class ClientSDK {
       | UnexpectedClientError
     >
   > {
-    const { context, errorCodes } = options;
+    const { context, isErrorStatusCode } = options;
+    const timeoutMs = context.timeoutMs;
 
     return retry(
       async () => {
-        const req = await this.#hooks.beforeRequest(context, request.clone());
+        const cloned = request.clone();
+        let attempt = cloned;
+        if (timeoutMs != null && timeoutMs > 0) {
+          const timeoutSignal = AbortSignal.timeout(timeoutMs);
+          const combined = combineSignals(cloned.signal, timeoutSignal)
+            ?? timeoutSignal;
+          attempt = new Request(cloned, { signal: combined });
+        }
+        const req = await this.#hooks.beforeRequest(context, attempt);
         await logRequest(this.#logger, req).catch((e) =>
           this.#logger?.log("Failed to log request:", e)
         );
@@ -257,7 +267,7 @@ export class ClientSDK {
         let response = await this.#httpClient.request(req);
 
         try {
-          if (matchStatusCode(response, errorCodes)) {
+          if (isErrorStatusCode(response.status)) {
             const result = await this.#hooks.afterError(
               context,
               response,
@@ -381,8 +391,6 @@ async function logResponse(
       break;
     case matchContentType(res, "application/jsonl")
       || jsonlLikeContentTypeRE.test(ct):
-      logger.log(await res.clone().text());
-      break;
     case matchContentType(res, "text/event-stream"):
       logger.log(`<${contentType}>`);
       break;
